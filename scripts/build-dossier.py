@@ -131,7 +131,8 @@ def make_doc():
         p(f"Projet realise le {date.today().strftime('%d/%m/%Y')} pour la Region Auvergne-Rhone-Alpes.", "Subtitle"),
         Spacer(1, 12 * mm),
         p("Auteur: Charly Offry", "Subtitle"),
-        p("Depot GitHub et lien de site en ligne: a renseigner apres choix de l'hebergement.", "Subtitle"),
+        p("Depot GitHub: https://github.com/charlyoff/trouve-ton-artisan", "Subtitle"),
+        p("Lien du site en ligne: a renseigner apres choix de l'hebergement Node + MySQL.", "Subtitle"),
         PageBreak(),
     ]
 
@@ -227,7 +228,7 @@ def make_doc():
     story.append(PageBreak())
     story += [p("8. Veille securite et suites", "H1x")]
     story.append(p("Une veille a ete effectuee sur Express, Sequelize, WCAG et les avis de securite npm. L'audit npm a initialement signale une dependance transitive vulnerable de uuid; le projet force maintenant uuid 11.1.1 via overrides, et npm audit --omit=dev revient sans alerte."))
-    story.append(p("Points a finaliser avant rendu public: choisir un hebergement compatible Node + MySQL, configurer un SMTP reel, renseigner l'URL du depot GitHub public et l'URL du site en ligne dans ce dossier."))
+    story.append(p("Points a finaliser avant rendu public: choisir un hebergement compatible Node + MySQL, configurer un SMTP reel et renseigner l'URL du site en ligne dans ce dossier. Le depot GitHub public est cree: https://github.com/charlyoff/trouve-ton-artisan."))
     story.append(p("La police Graphik est demandee par le brief. Faute de licence web redistribuable fournie, le CSS utilise Graphik si elle est installee localement puis Inter en fallback libre. Cette decision evite d'inclure illegalement des fichiers de police dans le depot."))
 
     doc.build(story)
