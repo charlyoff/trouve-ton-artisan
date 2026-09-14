@@ -1,0 +1,60 @@
+name: Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: trouve_ton_artisan
+          MYSQL_USER: artisan_reader
+          MYSQL_PASSWORD: artisan_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      NODE_ENV: test
+      APP_ORIGIN: http://127.0.0.1:3100
+      PORT: 3100
+      API_PORT: 3101
+      API_KEY: 12345678901234567890123456789012
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_NAME: trouve_ton_artisan
+      DB_USER: artisan_reader
+      DB_PASSWORD: artisan_password
+      MAIL_MODE: preview
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Load schema and seed
+        run: |
+          mysql -h 127.0.0.1 -uroot -proot trouve_ton_artisan < database/schema.sql
+          mysql -h 127.0.0.1 -uroot -proot trouve_ton_artisan < database/seed.sql
+          mysql -h 127.0.0.1 -uroot -proot -e "REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'artisan_reader'@'%'; GRANT SELECT ON trouve_ton_artisan.* TO 'artisan_reader'@'%'; FLUSH PRIVILEGES;"
+
+      - run: npx playwright install --with-deps chromium
+      - run: npm run check
+      - run: npm run test:db
+      - run: npm run test:e2e
+      - run: npm run audit:prod

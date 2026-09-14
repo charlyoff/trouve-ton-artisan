@@ -1,0 +1,40 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: change-this-root-password
+      MYSQL_DATABASE: trouve_ton_artisan
+      MYSQL_USER: artisan_reader
+      MYSQL_PASSWORD: change-this-reader-password
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pchange-this-root-password"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      APP_ORIGIN: http://localhost:3000
+      PORT: 3000
+      API_PORT: 3001
+      API_KEY: replace-with-32-random-characters
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: trouve_ton_artisan
+      DB_USER: artisan_reader
+      DB_PASSWORD: change-this-reader-password
+      MAIL_MODE: preview
+    ports:
+      - "3000:3000"
+
+volumes:
+  mysql-data:
