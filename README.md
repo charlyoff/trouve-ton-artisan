@@ -89,7 +89,7 @@ Les tests end-to-end couvrent les parcours principaux, le formulaire de contact,
 - Dossier PDF: `output/pdf/dossier-trouve-ton-artisan.pdf`.
 - Captures de validation: `docs/screenshots/`.
 - Donnees extraites: `docs/source-data.json`.
-- Maquettes Figma: fichier fourni par l'utilisateur, complete avec les ecrans responsive generes.
+- Maquettes Figma: lien fourni dans le dossier du devoir. Les captures incluses ici sont les captures du site final teste en responsive.
 
 ## Notes de securite
 

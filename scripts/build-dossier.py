@@ -207,7 +207,7 @@ def make_doc():
     ], [42 * mm, 118 * mm]))
 
     story += [p("7. Captures", "H1x")]
-    story.append(p("Les captures ci-dessous proviennent du site rendu localement et couvrent les vues demandees. Les fichiers complets sont disponibles dans docs/screenshots/."))
+    story.append(p("Lien vers les maquettes Figma fournies: https://www.figma.com/design/SXHK2YK4DRDDyRr97nqEby/Trouve-ton-artisan---Maquettes?node-id=0-1. Les captures ci-dessous proviennent du site final rendu localement et couvrent les vues demandees; elles servent de preuves de rendu responsive."))
     story.append(NextPageTemplate("landscape"))
     story.append(PageBreak())
 
