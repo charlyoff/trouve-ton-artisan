@@ -2,6 +2,7 @@
   "source": "data.xlsx / data2!A1:I18",
   "categories": 4,
   "specialties": 15,
+  "cities": 14,
   "artisans": 17,
   "featured": 3
 }

@@ -23,19 +23,21 @@ dbTest('database seed matches the source workbook shape', async () => {
       SELECT
         (SELECT COUNT(*) FROM categories) AS categories,
         (SELECT COUNT(*) FROM specialties) AS specialties,
+        (SELECT COUNT(*) FROM cities) AS cities,
         (SELECT COUNT(*) FROM artisans) AS artisans,
         (SELECT COUNT(*) FROM artisans WHERE is_top = 1) AS top_artisans
     `);
-    assert.deepEqual(counts, { categories: 4, specialties: 15, artisans: 17, top_artisans: 3 });
+    assert.deepEqual(counts, { categories: 4, specialties: 15, cities: 14, artisans: 17, top_artisans: 3 });
 
     const [rows] = await connection.execute(`
-      SELECT a.name, s.name AS specialty, c.slug AS category
+      SELECT a.name, s.name AS specialty, cat.slug AS category, city.name AS city
       FROM artisans a
       JOIN specialties s ON s.id = a.specialty_id
-      JOIN categories c ON c.id = s.category_id
+      JOIN categories cat ON cat.id = s.category_id
+      JOIN cities city ON city.id = a.city_id
       WHERE a.name = ?
     `, ['Boucherie Dumont']);
-    assert.deepEqual(rows[0], { name: 'Boucherie Dumont', specialty: 'Boucher', category: 'alimentation' });
+    assert.deepEqual(rows[0], { name: 'Boucherie Dumont', specialty: 'Boucher', category: 'alimentation', city: 'Lyon' });
   } finally {
     await connection.end();
   }

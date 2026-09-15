@@ -62,6 +62,14 @@ for (const width of [390, 768, 1440]) {
       if (['accueil', 'categorie', 'recherche'].includes(name)) await expect(page.locator('.artisan-card').first()).toBeVisible();
       if (name === 'fiche') await expect(page.getByRole('button', { name: 'Envoyer mon message' })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      expect(await page.evaluate(() => {
+        const ids = [...document.querySelectorAll('[id]')].map(node => node.id).filter(Boolean);
+        return ids.filter((id, index) => ids.indexOf(id) !== index);
+      })).toEqual([]);
+      expect(await page.evaluate(() => {
+        const headings = [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(node => Number(node.tagName.slice(1)));
+        return headings.slice(1).every((level, index) => level <= headings[index] + 1);
+      })).toBe(true);
       const analysis = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
       expect(analysis.violations.map(v => ({ id: v.id, targets: v.nodes.map(n => ({ target: n.target, reason: n.failureSummary })) }))).toEqual([]);
       await page.screenshot({ path: `docs/screenshots/${name}-${width}.png`, fullPage: true });

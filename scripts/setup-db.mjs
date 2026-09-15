@@ -19,6 +19,6 @@ try {
     await connection.query('CREATE USER IF NOT EXISTS ?@? IDENTIFIED BY ?', [process.env.DB_USER, '%', process.env.DB_PASSWORD]);
     await connection.query(`GRANT SELECT ON \`${name}\`.* TO ?@?`, [process.env.DB_USER, '%']);
   }
-  const [counts] = await connection.query('SELECT (SELECT COUNT(*) FROM categories) AS categories, (SELECT COUNT(*) FROM specialties) AS specialties, (SELECT COUNT(*) FROM artisans) AS artisans');
+  const [counts] = await connection.query('SELECT (SELECT COUNT(*) FROM categories) AS categories, (SELECT COUNT(*) FROM specialties) AS specialties, (SELECT COUNT(*) FROM cities) AS cities, (SELECT COUNT(*) FROM artisans) AS artisans');
   console.log('Database initialized:', counts[0]);
 } finally { await connection.end(); }

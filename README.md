@@ -20,6 +20,7 @@ Le projet contient une interface responsive, une API REST securisee, une base re
 
 - React 19, React Router, Bootstrap 5 et Sass.
 - Node.js, Express, Sequelize et MySQL.
+- API organisee par responsabilites: routes, controllers, services et middlewares.
 - Helmet, validation Zod, rate limit, session CSRF et cookie `HttpOnly`.
 - Playwright + axe-core pour les tests de parcours et d'accessibilite.
 
@@ -59,7 +60,7 @@ Les scripts demandes pour le rendu sont dans:
 - `database/schema.sql`: creation du schema relationnel.
 - `database/seed.sql`: alimentation des categories, specialites et artisans.
 
-Le script `scripts/extract-sources.py` a servi a convertir les donnees du tableur fourni vers SQL, en conservant les libelles et descriptions du fichier source.
+Le script `scripts/extract-sources.py` a servi a convertir les donnees du tableur fourni vers SQL, en conservant les libelles et descriptions du fichier source. Le schema contient maintenant une entite `cities` reliee aux artisans par `city_id` afin d'eviter les redondances de ville.
 
 ## Variables d'environnement principales
 
@@ -82,7 +83,7 @@ npm run test:e2e
 npm run audit:prod
 ```
 
-Les tests end-to-end couvrent les parcours principaux, le formulaire de contact, les protections API et des audits axe-core en 390, 768 et 1440 px.
+Les tests end-to-end couvrent les parcours principaux, le formulaire de contact, les protections API, l'absence d'IDs dupliques, la hierarchie des titres et des audits axe-core en 390, 768 et 1440 px.
 
 ## Livrables
 
