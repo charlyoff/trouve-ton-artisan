@@ -175,14 +175,15 @@ def make_doc():
     ], [32 * mm, 44 * mm, 84 * mm]))
 
     story += [p("4. Base de donnees", "H1x")]
-    story.append(p("MCD simplifie: une categorie possede plusieurs specialites; une specialite possede plusieurs artisans. Un artisan appartient a une seule specialite."))
+    story.append(p("MCD simplifie: une categorie possede plusieurs specialites; une specialite possede plusieurs artisans; une ville peut etre associee a plusieurs artisans. Cette entite Ville evite de repeter le meme libelle dans chaque artisan et respecte mieux les formes normales."))
     story.append(table([
         ["Entite", "Attributs principaux", "Relations"],
         ["Category", "id, name, slug", "1,n avec Specialty"],
         ["Specialty", "id, name, category_id", "n,1 avec Category; 1,n avec Artisan"],
-        ["Artisan", "id, name, rating, city, about, email, website, is_top, specialty_id", "n,1 avec Specialty"],
+        ["City", "id, name", "1,n avec Artisan"],
+        ["Artisan", "id, name, rating, about, email, website, is_top, specialty_id, city_id", "n,1 avec Specialty; n,1 avec City"],
     ], [28 * mm, 82 * mm, 50 * mm]))
-    story.append(p("MLD: categories(id PK, name UNIQUE, slug UNIQUE), specialties(id PK, name UNIQUE, category_id FK), artisans(id PK, rating CHECK 0..5, specialty_id FK). Les suppressions en cascade ne sont pas activees pour eviter les pertes accidentelles."))
+    story.append(p("MLD: categories(id PK, name UNIQUE, slug UNIQUE), specialties(id PK, name UNIQUE, category_id FK), cities(id PK, name UNIQUE), artisans(id PK, rating CHECK 0..5, specialty_id FK, city_id FK). Les suppressions en cascade ne sont pas activees pour eviter les pertes accidentelles."))
     story.append(Preformatted("database/schema.sql\n  creation des 3 tables et contraintes\ndatabase/seed.sql\n  insertion des donnees du tableur fourni", styles["Smallx"]))
 
     story += [p("5. Securite et accessibilite", "H1x")]
@@ -202,7 +203,7 @@ def make_doc():
         ["npm run test", "Schemas de validation et entrees hostiles; tests unitaires passes."],
         ["npm run test:db", "Volumes importes et droit lecture seule; tests passes sur MySQL local."],
         ["npm run build", "Compilation Vite production passee."],
-        ["npm run test:e2e", "Parcours principaux, contact preview, protections API et audits axe-core en 390/768/1440 px."],
+        ["npm run test:e2e", "Parcours principaux, contact preview, protections API, absence d'ID duplique, hierarchie de titres et audits axe-core en 390/768/1440 px."],
         ["npm run audit:prod", "Audit npm de production sans vulnerabilite connue au moment du test."],
     ], [42 * mm, 118 * mm]))
 
