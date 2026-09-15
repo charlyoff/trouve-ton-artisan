@@ -26,7 +26,7 @@ function Listing() {
   return <div className="page-container content-page"><PageMeta title={title} description={`Découvrez les artisans ${category || 'de la région Auvergne-Rhône-Alpes'}, leurs spécialités, leurs notes et leurs coordonnées de contact.`} noindex={!!q} />
     <Breadcrumb><span aria-current="page">{category || 'Recherche'}</span></Breadcrumb>
     <div className="page-heading"><span className="eyebrow">UN SAVOIR-FAIRE PRÈS DE CHEZ VOUS</span><h1>{title}</h1><p>Choisissez un professionnel et découvrez comment il peut vous accompagner.</p></div>
-    {result.loading ? <Loading /> : result.error ? <ErrorState {...result} /> : <><p className="result-count" role="status">{result.data.length} artisan{result.data.length > 1 ? 's' : ''} trouvé{result.data.length > 1 ? 's' : ''}</p>{result.data.length ? <ArtisanGrid artisans={result.data} /> : <div className="state-panel"><h2>Aucun artisan trouvé</h2><p>Essayez un autre nom ou explorez les catégories du menu.</p><Link to="/artisans" className="btn btn-primary">Voir tous les artisans</Link></div>}</>}
+    {result.loading ? <Loading /> : result.error ? <ErrorState {...result} /> : <><p className="result-count" role="status">{result.data.length} artisan{result.data.length > 1 ? 's' : ''} trouvé{result.data.length > 1 ? 's' : ''}</p>{result.data.length ? <ArtisanGrid artisans={result.data} headingLevel={2} /> : <div className="state-panel"><h2>Aucun artisan trouvé</h2><p>Essayez un autre nom ou explorez les catégories du menu.</p><Link to="/artisans" className="btn btn-primary">Voir tous les artisans</Link></div>}</>}
   </div>;
 }
 function Profile() {

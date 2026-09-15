@@ -47,12 +47,13 @@ export function Rating({ value }) {
     <span aria-hidden="true">{label}/5</span>
   </div>;
 }
-export function ArtisanCard({ artisan }) {
+export function ArtisanCard({ artisan, headingLevel = 3 }) {
+  const Heading = `h${headingLevel}`;
   return <article className="artisan-card card h-100"><Link to={`/artisan/${artisan.id}`} className="card-body">
-    <h3>{artisan.name}</h3><Rating value={artisan.rating} /><span className="specialty">{artisan.specialty}</span><p className="location"><span aria-hidden="true">📍</span> {artisan.city}</p>
+    <Heading>{artisan.name}</Heading><Rating value={artisan.rating} /><span className="specialty">{artisan.specialty}</span><p className="location"><span aria-hidden="true">📍</span> {artisan.city}</p>
   </Link></article>;
 }
-export function ArtisanGrid({ artisans }) { return <div className="row g-4 artisan-grid">{artisans.map(a => <div key={a.id} className="col-12 col-md-6 col-lg-4"><ArtisanCard artisan={a} /></div>)}</div>; }
+export function ArtisanGrid({ artisans, headingLevel = 3 }) { return <div className="row g-4 artisan-grid">{artisans.map(a => <div key={a.id} className="col-12 col-md-6 col-lg-4"><ArtisanCard artisan={a} headingLevel={headingLevel} /></div>)}</div>; }
 export function Loading() { return <div className="state-panel" role="status"><span className="spinner-border spinner-border-sm me-2" aria-hidden="true" />Chargement des artisans…</div>; }
 export function ErrorState({ error, retry }) { return <div className="state-panel"><p role="alert">{error.message}</p><button className="btn btn-primary" onClick={retry}>Réessayer</button></div>; }
 export function Breadcrumb({ children }) { return <nav className="breadcrumbs" aria-label="Fil d’Ariane"><Link to="/">Accueil</Link><span aria-hidden="true">/</span>{children}</nav>; }

@@ -16,6 +16,7 @@ assert len(records) == 17 and len(headers) == 9
 categories = ['Bâtiment', 'Services', 'Fabrication', 'Alimentation']
 slugs = ['batiment', 'services', 'fabrication', 'alimentation']
 specialties = list(dict.fromkeys(row[1] for row in records))
+cities = list(dict.fromkeys(row[3] for row in records))
 
 def sql(value):
     if value is None:
@@ -34,11 +35,13 @@ for i, name in enumerate(specialties, 1):
     category = next(row[7] for row in records if row[1] == name)
     assert all(row[7] == category for row in records if row[1] == name)
     lines.append(f'INSERT INTO specialties (id, name, category_id) VALUES ({i}, {sql(name)}, {categories.index(category)+1});')
+for i, name in enumerate(cities, 1):
+    lines.append(f'INSERT INTO cities (id, name) VALUES ({i}, {sql(name)});')
 for i, row in enumerate(records, 1):
     name, specialty, rating, city, about, email, website, category, top = row
-    values = [i, name, float(rating), city, about, email, website, top, specialties.index(specialty)+1]
-    lines.append('INSERT INTO artisans (id, name, rating, city, about, email, website, is_top, specialty_id) VALUES (' + ', '.join(map(sql, values)) + ');')
+    values = [i, name, float(rating), about, email, website, top, specialties.index(specialty)+1, cities.index(city)+1]
+    lines.append('INSERT INTO artisans (id, name, rating, about, email, website, is_top, specialty_id, city_id) VALUES (' + ', '.join(map(sql, values)) + ');')
 lines.append('COMMIT;')
 (root / 'database' / 'seed.sql').write_text('\n'.join(lines) + '\n', encoding='utf-8')
-(root / 'docs' / 'source-data.json').write_text(json.dumps({'source': 'data.xlsx / data2!A1:I18', 'categories': 4, 'specialties': len(specialties), 'artisans': len(records), 'featured': sum(bool(r[8]) for r in records)}, indent=2), encoding='utf-8')
-print(f'Imported {len(records)} artisans, {len(specialties)} specialties, 4 categories, 3 featured.')
+(root / 'docs' / 'source-data.json').write_text(json.dumps({'source': 'data.xlsx / data2!A1:I18', 'categories': 4, 'specialties': len(specialties), 'cities': len(cities), 'artisans': len(records), 'featured': sum(bool(r[8]) for r in records)}, indent=2), encoding='utf-8')
+print(f'Imported {len(records)} artisans, {len(specialties)} specialties, {len(cities)} cities, 4 categories, 3 featured.')
